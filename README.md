@@ -1,16 +1,23 @@
 # Connect Database by ODBC
 
-A Rust-based ODBC database client that provides a simple interface for connecting to and querying databases using ODBC.
+一个基于 Rust 的 ODBC 数据库客户端，提供简单的命令行接口来连接和查询数据库。
 
-## Requirements
+## 功能特点
 
-- Rust 1.56 or later
-- ODBC Driver Manager (unixODBC on Linux)
-- Appropriate ODBC driver for your target database
+- 支持通过命令行参数配置数据库连接
+- 支持执行 SQL 查询并显示结果
+- 支持多种 ODBC 驱动程序
+- 错误处理和友好的错误提示
 
-## Installation
+## 系统要求
 
-1. Install the ODBC Driver Manager:
+- Rust 1.56 或更高版本
+- ODBC 驱动程序管理器（Linux 上使用 unixODBC）
+- 目标数据库的 ODBC 驱动程序
+
+## 安装
+
+1. 安装 ODBC 驱动程序管理器：
    ```bash
    # Ubuntu/Debian
    sudo apt-get install unixodbc unixodbc-dev
@@ -19,40 +26,85 @@ A Rust-based ODBC database client that provides a simple interface for connectin
    sudo yum install unixODBC unixODBC-devel
    ```
 
-2. Install the appropriate ODBC driver for your database (e.g., MySQL, PostgreSQL, SQL Server)
+2. 安装目标数据库的 ODBC 驱动程序（例如：达梦数据库、MySQL、PostgreSQL 等）
 
-3. Clone and build the project:
+3. 克隆并构建项目：
    ```bash
+   git clone <repository-url>
+   cd db-conn-odbc
    cargo build --release
    ```
 
-## Usage
+## 使用方法
 
-1. Configure your ODBC connection string in `src/main.rs`:
-   ```rust
-   let connection_string = "Driver={Your ODBC Driver};Server=your_server;Database=your_db;UID=username;PWD=password";
-   ```
+程序支持以下命令行参数：
 
-2. Run the client:
+| 参数 | 短选项 | 长选项 | 说明 |
+|------|--------|--------|------|
+| 驱动程序 | -D | --driver | ODBC 驱动程序名称 |
+| 服务器 | -s | --server | 服务器地址和端口 |
+| 数据库 | -b | --database | 数据库名称 |
+| 用户名 | -u | --uid | 数据库用户名 |
+| 密码 | -p | --pwd | 数据库密码 |
+| SQL查询 | -q | --query | 要执行的 SQL 查询语句 |
+
+### 示例
+
+1. 连接达梦数据库：
    ```bash
-   cargo run
+   cargo run -- -D "DM8 ODBC DRIVER" \
+                -s "172.16.117.71:15236" \
+                -b "JWAB" \
+                -u "JWAB" \
+                -p "jhy123456" \
+                -q "SELECT * FROM dual"
    ```
 
-## Features
+2. 连接 MySQL：
+   ```bash
+   cargo run -- -D "MySQL ODBC 8.0 Driver" \
+                -s "localhost:3306" \
+                -b "testdb" \
+                -u "root" \
+                -p "password" \
+                -q "SELECT * FROM users"
+   ```
 
-- Simple connection management
-- Query execution
-- Result set handling
-- Error handling with context
+3. 查看帮助信息：
+   ```bash
+   cargo run -- --help
+   ```
 
-## Example
+## 常见问题
 
-```rust
-let client = OdbcClient::new()?;
-let connection = client.connect(connection_string)?;
-client.execute_query(&connection, "SELECT * FROM your_table")?;
-```
+1. 找不到 ODBC 驱动程序
+   - 确保已正确安装 ODBC 驱动程序
+   - 检查驱动程序名称是否正确
+   - 在 Linux 上，可以使用 `odbcinst -q -d` 命令查看已安装的驱动程序
 
-## License
+2. 连接失败
+   - 检查服务器地址和端口是否正确
+   - 验证用户名和密码
+   - 确认数据库名称是否正确
+   - 检查网络连接是否正常
+
+## 开发
+
+1. 添加新的依赖：
+   ```bash
+   cargo add <package-name>
+   ```
+
+2. 运行测试：
+   ```bash
+   cargo test
+   ```
+
+3. 代码格式化：
+   ```bash
+   cargo fmt
+   ```
+
+## 许可证
 
 MIT
