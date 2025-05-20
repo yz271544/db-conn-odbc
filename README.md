@@ -20,7 +20,7 @@
 1. 安装 ODBC 驱动程序管理器：
    ```bash
    # Ubuntu/Debian
-   sudo apt-get install unixodbc unixodbc-dev
+   sudo apt-get install unixodbc unixodbc-dev odbcinst
    
    # CentOS/RHEL
    sudo yum install unixODBC unixODBC-devel
