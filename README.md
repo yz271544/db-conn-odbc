@@ -18,6 +18,7 @@
 ## 安装
 
 1. 安装 ODBC 驱动程序管理器：
+
    ```bash
    # Ubuntu/Debian
    sudo apt-get install unixodbc unixodbc-dev odbcinst
@@ -29,6 +30,7 @@
 2. 安装目标数据库的 ODBC 驱动程序（例如：达梦数据库、MySQL、PostgreSQL 等）
 
 3. 克隆并构建项目：
+
    ```bash
    git clone <repository-url>
    cd db-conn-odbc
@@ -51,6 +53,7 @@
 ### 示例
 
 1. 连接达梦数据库：
+
    ```bash
    cargo run -- -D "DM8 ODBC DRIVER" \
                 -s "172.16.117.71:15236" \
@@ -61,6 +64,7 @@
    ```
 
 2. 连接 MySQL：
+
    ```bash
    cargo run -- -D "MySQL ODBC 8.0 Driver" \
                 -s "localhost:3306" \
@@ -70,7 +74,19 @@
                 -q "SELECT * FROM users"
    ```
 
-3. 查看帮助信息：
+3. 连接 PostgreSQL：
+
+   ```bash
+   cargo run -- -D "PostgreSQL ANSI" \
+                -s "localhost" \     
+                -b "rustboot" \
+                -u "postgres" \
+                -p "password" \
+                -q "select current_timestamp(0)"
+   ```
+
+4. 查看帮助信息：
+
    ```bash
    cargo run -- --help
    ```
@@ -91,16 +107,19 @@
 ## 开发
 
 1. 添加新的依赖：
+
    ```bash
    cargo add <package-name>
    ```
 
 2. 运行测试：
+
    ```bash
    cargo test
    ```
 
 3. 代码格式化：
+
    ```bash
    cargo fmt
    ```
